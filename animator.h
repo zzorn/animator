@@ -49,18 +49,23 @@ class Property
 
     void setMin(int minValue);
     void setMax(int maxValue);
-    void setLimits(int minValue, int maxValue);
+    void setRange(int minValue, int maxValue);
     void setRepeat(bool repeating);
 
-    Property animate(function: ContinuousFunction);
-    Property animate(function: ContinuousFunction, long duration_ms);
-    Property animate(function: ContinuousFunction, long duration_ms, long wavelength_ms);
-    Property animate(function: ContinuousFunction, long duration_ms, long wavelength_ms, int amplitude);
+    void setPwmScaling(int division, int shift);
+    void setAutomaticPwmScaling(); // Scales based on current range.
+    void setPwmOutPin(int pwmPin);
+    void detachPwmOutPin();
 
-    Property animateTo(target: int);
-    Property animateTo(target: int, long duration_ms);
-    Property animateTo(target: int, long duration_ms, changeFunction: ChangeFunction);
-    Property animateTo(target: int, long duration_ms, startChange: ChangeFunction, endChange: ChangeFunction);
+    Property animate(ContinuousFunction function);
+    Property animate(ContinuousFunction function, long duration_ms);
+    Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms);
+    Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms, int amplitude);
+
+    Property animateTo(int target);
+    Property animateTo(int target, long duration_ms);
+    Property animateTo(int target, long duration_ms, ChangeFunction changeFunction);
+    Property animateTo(int target, long duration_ms, ChangeFunction startChange, ChangeFunction endChange);
 
     // Copy another property but apply some filter function
     // Fade between two other properties using a change function
@@ -70,12 +75,17 @@ class Property
 
     // Follow another property with some inertia, acceleration, friction, etc - can this be implemented simply using some other functions?
 
-    void pause();
-    void play();
+    bool isFinished();
+    void waitUntilFinished();
     void stop();
-    void clear();
+
+    void pause();
+    void resume();
+    void setPaused(bool paused);
 
     void update(long millisecondsSinceLastCall);
+    static void updateAll(long time);
+    static void updateAll();
 
 // Animate to
 
