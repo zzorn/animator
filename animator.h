@@ -50,7 +50,6 @@ class Property
     void setMin(int minValue);
     void setMax(int maxValue);
     void setRange(int minValue, int maxValue);
-    void setRepeat(bool repeating);
 
     void setPwmScaling(int division, int shift);
     void setAutomaticPwmScaling(); // Scales based on current range.
@@ -61,11 +60,14 @@ class Property
     Property animate(ContinuousFunction function, long duration_ms);
     Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms);
     Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms, int amplitude);
+    Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms, int amplitude, int offset);
 
     Property animateTo(int target);
     Property animateTo(int target, long duration_ms);
     Property animateTo(int target, long duration_ms, ChangeFunction changeFunction);
     Property animateTo(int target, long duration_ms, ChangeFunction startChange, ChangeFunction endChange);
+
+    Property animate(Animation animation);
 
     // Copy another property but apply some filter function
     // Fade between two other properties using a change function
@@ -94,6 +96,16 @@ class Property
   private:
     int _value;
 };
+
+
+abstract class Animation {
+  public:
+  
+    long calculateValue(long currentTime, long timeSinceLastUpdate);
+
+
+}
+
 
 #endif
 
