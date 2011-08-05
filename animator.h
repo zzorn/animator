@@ -81,12 +81,8 @@ class Property
 /* TODO: Implement
     void setMin(int minValue);
     void setMax(int maxValue);
-<<<<<<< HEAD
     void setRange(int minValue, int maxValue);
-=======
 */    
-    void setRange(long minValue, long maxValue);
->>>>>>> cf75832d61c24efeda414129cea4f2ba115f9b7c
 
 /* TODO: Implement
     void setPwmScaling(int division, int shift);
@@ -99,13 +95,9 @@ class Property
     Property animate(ContinuousFunction function);
     Property animate(ContinuousFunction function, long duration_ms);
     Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms);
-<<<<<<< HEAD
     Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms, int amplitude);
     Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms, int amplitude, int offset);
-=======
 */
-    Property animate(ContinuousFunction function, long duration_us, long wavelength_us, int amplitude);
->>>>>>> cf75832d61c24efeda414129cea4f2ba115f9b7c
 
 /* TODO: Implement
     Property animateTo(int target);
