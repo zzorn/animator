@@ -6,6 +6,30 @@
   Useful for various smoothly blinking leds, rgb led animation sequences, servo animations, sound wave generation, and many other things.
 */
 
+/*
+
+Types of animations:
+
+- continuous, e.g. random function or noise - can be seen as consisting of a sequence of sequential ones
+  - wave - a repeating wave of some shape.
+- parametrized - using some input value as the goal or other parameter - enough if this can be configured from the arduino program
+- value change over time - change the value to a target value over some time in some way
+
+
+
+
+A change function takes as parameter the relative position on the change, and the start and end values.
+
+A wave function takes as parameter the time since start, the start value, the wavelength, and the amplitude
+
+
+
+
+Values of a property could be connected directly to some output ports later, or just read manually.
+
+*/
+
+
 #ifndef animator_h
 #define animator_h
 
@@ -13,59 +37,82 @@
 #include "WProgram.h"
 
 
-typedef long (*ContinuousFunction) (long timeSinceStart_ms, long startValue, long wavelength, long amplitude);
-typedef long (*ChangeFunction) (long timeSinceStart_ms, long startValue, long targetValue);
+typedef long (*ContinuousFunction) (long, long, long, long);
+typedef long (*ChangeFunction) (long, long, long );
 
 //AnimationFunction numeral[10] = {zero,one,two,three,four,five,six,seven,eight,nine};
 
 // Continuous functions
-long pause(long timeSinceStart_ms, long startValue, long wavelength, long amplitude);
-long sine(long timeSinceStart_ms, long startValue, long wavelength, long amplitude);
-long square(long timeSinceStart_ms, long startValue, long wavelength, long amplitude);
-long sawtooth(long timeSinceStart_ms, long startValue, long wavelength, long amplitude);
-long pinkNoise(long timeSinceStart_ms, long startValue, long wavelength, long amplitude);
-long brownNoise(long timeSinceStart_ms, long startValue, long wavelength, long amplitude);
-long whiteNoise(long timeSinceStart_ms, long startValue, long wavelength, long amplitude);
-long noise(long timeSinceStart_ms, long startValue, long wavelength, long amplitude);
+long pause(long t, long startValue, long wavelength, long amplitude);
+long sine(long t, long startValue, long wavelength, long amplitude);
+long square(long t, long startValue, long wavelength, long amplitude);
+
+/* TODO: Implement
+long sawtooth(long t, long startValue, long wavelength, long amplitude);
+long pinkNoise(long t, long startValue, long wavelength, long amplitude);
+long brownNoise(long t, long startValue, long wavelength, long amplitude);
+long whiteNoise(long t, long startValue, long wavelength, long amplitude);
+long noise(long t, long startValue, long wavelength, long amplitude);
+*/
 
 // Change functions
-long jump(long timeSinceStart_ms, long startValue, long targetValue);
-long slide(long timeSinceStart_ms, long startValue, long targetValue);
-long smooth(long timeSinceStart_ms, long startValue, long targetValue);
-long snap(long timeSinceStart_ms, long startValue, long targetValue);
-long bounce(long timeSinceStart_ms, long startValue, long targetValue);
-long wave(long timeSinceStart_ms, long startValue, long targetValue);
-long randomWalk(long timeSinceStart_ms, long startValue, long targetValue);
-long speed(long timeSinceStart_ms, long startValue, long targetValue);
-long brake(long timeSinceStart_ms, long startValue, long targetValue);
+long jump(long t, long startValue, long targetValue);
+long slide(long t, long startValue, long targetValue);
+
+/* TODO: Implement
+long smooth(long t, long startValue, long targetValue);
+long snap(long t, long startValue, long targetValue);
+long bounce(long t, long startValue, long targetValue);
+long wave(long t, long startValue, long targetValue);
+long randomWalk(long t, long startValue, long targetValue);
+long speed(long t, long startValue, long targetValue);
+long brake(long t, long startValue, long targetValue);
+*/
 
 class Property
 {
   public:
-    Property(int initialValue);
+    Property(long initialValue);
+    Property(long initialValue, long min, long max);
 
-    int get();
-    void set(int newValue);
+    long get();
+    void set(long newValue);
 
+/* TODO: Implement
     void setMin(int minValue);
     void setMax(int maxValue);
+<<<<<<< HEAD
     void setRange(int minValue, int maxValue);
+=======
+*/    
+    void setRange(long minValue, long maxValue);
+>>>>>>> cf75832d61c24efeda414129cea4f2ba115f9b7c
 
+/* TODO: Implement
     void setPwmScaling(int division, int shift);
     void setAutomaticPwmScaling(); // Scales based on current range.
     void setPwmOutPin(int pwmPin);
     void detachPwmOutPin();
+*/    
 
+/* TODO: Implement
     Property animate(ContinuousFunction function);
     Property animate(ContinuousFunction function, long duration_ms);
     Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms);
+<<<<<<< HEAD
     Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms, int amplitude);
     Property animate(ContinuousFunction function, long duration_ms, long wavelength_ms, int amplitude, int offset);
+=======
+*/
+    Property animate(ContinuousFunction function, long duration_us, long wavelength_us, int amplitude);
+>>>>>>> cf75832d61c24efeda414129cea4f2ba115f9b7c
 
+/* TODO: Implement
     Property animateTo(int target);
     Property animateTo(int target, long duration_ms);
     Property animateTo(int target, long duration_ms, ChangeFunction changeFunction);
-    Property animateTo(int target, long duration_ms, ChangeFunction startChange, ChangeFunction endChange);
+*/
+    Property animateTo(int target, long duration_us, ChangeFunction startChange, ChangeFunction endChange);
 
     Property animate(Animation animation);
 
@@ -77,24 +124,32 @@ class Property
 
     // Follow another property with some inertia, acceleration, friction, etc - can this be implemented simply using some other functions?
 
-    bool isFinished();
+/*
     void waitUntilFinished();
-    void stop();
+*/
 
+    void setRepeat(bool repeating);
+/*
     void pause();
     void resume();
     void setPaused(bool paused);
+*/
 
-    void update(long millisecondsSinceLastCall);
-    static void updateAll(long time);
+    bool isFinished();
+    void stop();
+    
+
+/*
     static void updateAll();
+*/
 
 // Animate to
 
 // 
 
   private:
-    int _value;
+    long _scaling = 1024;
+    long _value = 0;
 };
 
 
